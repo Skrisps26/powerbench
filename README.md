@@ -10,26 +10,23 @@ Extends [DREAM:Lab's PAISE 2025 Jetson Orin AGX benchmark](https://dream-lab.in)
 
 ### Inference (Qwen3-0.6B, batch size 1, input 32, output 32)
 
-| Precision | Model Size (MB) | Mean Latency (ms) | Tokens/sec | Perplexity |
-|-----------|-----------------|-------------------|------------|------------|
-| FP16      | 1433.62         | 2407.20           | 13.29      | 14.80      |
-| INT8      | 1013.62         | 10056.30          | 3.18       | 19.46      |
-| INT4      | 803.62          | 3965.26           | 8.07       | 15.36      |
+| Precision | Model Size (MB) | Mean Latency (ms) | Tokens/sec | WikiPPL | GSM8K |
+|-----------|-----------------|-------------------|------------|---------|-------|
+| FP16      | 1434.14         | 3061.50           | 10.45      | 19.89   | 6.0%  |
+| INT8      | 3154.45         | 9642.51           | 3.32       | 19.93   | 11.0% |
+| INT4      | 3154.45         | 3403.60           | 9.40       | 22.47   | 4.0%  |
 
-**Finding:** INT8 is approximately 3x *slower* than FP16 on consumer hardware, the opposite
-of results on the Jetson Orin AGX. Consumer GPUs lack dedicated INT8 tensor cores, so
-quantization overhead dominates rather than helping. Quantization benefits are not portable
-across hardware architectures.
+**Finding:** INT8 is approximately 3x *slower* than FP16 on consumer hardware. This confirms that quantization benefits are not portable across hardware architectures (e.g., Jetson vs. RTX 2050). Language modeling (WikiPPL) remains robust, but reasoning accuracy at this scale is minimal.
 
 ### GRPO Training (Qwen3-0.6B + QLoRA rank-16)
 
 | Metric | Value |
 |--------|-------|
-| Mean rollout time | 159,132 ms |
-| Rollouts/minute | 1.5 |
-| Peak VRAM | 1,151 MB |
-| Mean power draw | 14.3 W |
-| OOM count (100 steps) | 0 |
+| Mean rollout time | 107,417 ms |
+| Rollouts/minute | 2.2 |
+| Peak VRAM | 911 MB |
+| Mean power draw | 12.26 W |
+| OOM count (5 steps) | 0 |
 | Long-tail frequency | 100% |
 
 Every sequence exceeded the long-tail threshold (384 tokens), making consumer-hardware
@@ -93,10 +90,10 @@ nvidia-smi power readings.
 
 | Round | Clients selected | Avg reward | Energy used |
 |-------|-----------------|------------|-------------|
-| 1     | 2/2             | 0.63       | 79.94 J     |
-| 2     | 2/2             | 0.50       | 89.21 J     |
-| 3     | 2/2             | 0.13       | 84.41 J     |
-| Total |                 |            | 253.57 J / 1000 J budget |
+| 1     | 2/2             | 0.50       | 76.22 J     |
+| 2     | 2/2             | 0.38       | 76.85 J     |
+| 3     | 2/2             | 0.75       | 74.53 J     |
+| Total |                 |            | 215.83 J / 1000 J budget |
 
 ---
 
