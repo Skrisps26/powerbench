@@ -121,10 +121,13 @@ python benchmark_inference.py --model Qwen/Qwen3-0.6B
 python benchmark_training.py --model Qwen/Qwen3-0.6B --steps 10
 
 # Head scoring
-python head_scorer.py --model_path Qwen/Qwen3-0.6B
+python head_scorer.py --model Qwen/Qwen3-0.6B
 
 # CALM composition
 python calm_compose.py
+
+# Energy-aware federated GRPO simulation
+python fedgrpo_energy.py
 ```
 
 ---
