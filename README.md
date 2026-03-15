@@ -2,7 +2,7 @@
 
 Benchmarking LLM inference and GRPO reasoning RL training on consumer GPUs (RTX 2050, 4GB VRAM).
 
-Extends [DREAM:Lab's PAISE 2025 Jetson Orin AGX benchmark](https://dream-lab.in) to the sub-4GB consumer hardware regime.
+
 
 ---
 
