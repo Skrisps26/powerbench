@@ -376,7 +376,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model_path", default="Qwen/Qwen3-0.6B")
+    parser.add_argument("--model", default="Qwen/Qwen3-0.6B")
     parser.add_argument("--k_values", nargs="+", type=float, default=[0, 10, 20, 30])
     parser.add_argument("--output", default="head_scores.json")
     args = parser.parse_args()
@@ -384,9 +384,9 @@ if __name__ == "__main__":
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Using device: {device}")
 
-    tokenizer = AutoTokenizer.from_pretrained(args.model_path)
+    tokenizer = AutoTokenizer.from_pretrained(args.model)
     model = AutoModelForCausalLM.from_pretrained(
-        args.model_path,
+        args.model,
         torch_dtype=torch.float16,
         device_map=device,
     )

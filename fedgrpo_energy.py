@@ -252,8 +252,10 @@ class FedGRPOServer:
         self.aggregate(results)
         print(f"Total energy used so far: {self.total_energy_used:.2f}J / {self.config.energy_budget_joules}J")
 
-def run_benchmark():
+def run_benchmark(model_name=None):
     config = FGRPOConfig()
+    if model_name:
+        config.model_name = model_name
     print(f"Starting Energy-aware Federated GRPO with {config.n_clients} clients...")
     
     # 1. Load shared base model and wrap with LoRA
@@ -290,4 +292,8 @@ def run_benchmark():
     print(f"Final Total Energy: {server.total_energy_used:.2f} J")
 
 if __name__ == "__main__":
-    run_benchmark()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model", default="Qwen/Qwen3-0.6B")
+    args = parser.parse_args()
+    run_benchmark(model_name=args.model)
