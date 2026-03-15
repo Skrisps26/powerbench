@@ -148,8 +148,12 @@ class CALMComposer(nn.Module):
         return float(torch.exp(torch.tensor(mean_loss)))
 
 if __name__ == "__main__":
-    # Example initialization
-    model_path = "Qwen/Qwen3-0.6B"
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model", default="Qwen/Qwen3-0.6B")
+    args = parser.parse_args()
+
+    model_path = args.model
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Using device: {device}")
 
